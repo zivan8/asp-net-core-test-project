@@ -86,6 +86,22 @@ namespace Test.Controllers
             return View(employees);
         }
 
-        
+        [Route("chart")]
+        public async Task<FileResult> PieChart()
+        {
+            IEnumerable<Employee> employees = await GetEmployees();
+
+            List<double> totalTimes = employees.Select(e => e.TotalTimeWorked.TotalSeconds).ToList();
+            double totalSeconds = totalTimes.Sum();
+            double[] data = employees.Select(e => e.TotalTimeWorked.TotalSeconds / totalSeconds).ToArray();
+            string[] labels = employees.Select(e => e.Name).ToArray();
+
+            PieChart chart = new PieChart(640, 640);
+            chart.setPieSize(320, 320, 200);
+            chart.setData(data, labels);
+            byte[] bytes = chart.makeChart2(Chart.PNG);
+
+            return new FileStreamResult(new MemoryStream(bytes), "image/png") { FileDownloadName = "chart.png" };
+        }
     }
 }

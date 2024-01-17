@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Test.Models.Employee>
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<h1>Employees</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalTimeWorked)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="@(Html.Raw("background-color: " + (item.TotalTimeWorked.TotalHours < 100 ? "lightsalmon" : "")))">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalTimeWorked)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
